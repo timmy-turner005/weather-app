@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Search from "../search";
 
 export default function Weather() {
@@ -7,6 +7,7 @@ export default function Weather() {
   const [weatherData, setWeatherData] = useState(null);
 
   async function fetchWeatherData(param) {
+    setLoading(true);
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${param}&appid=051a48ae80b1ca4c8f69446dfa411cf3`
@@ -14,8 +15,12 @@ export default function Weather() {
 
       const data = await response.json();
 
-      console.log(data, "data");
+      if (data) {
+        setWeatherData(data);
+        setLoading(false);
+      }
     } catch (e) {
+      setLoading(false);
       console.log(e);
     }
   }
@@ -23,6 +28,12 @@ export default function Weather() {
   function handleSearch() {
     fetchWeatherData(search);
   }
+
+  useEffect(() => {
+    fetchWeatherData("bangalore");
+  }, []);
+
+  console.log(weatherData);
 
   return (
     <div>
