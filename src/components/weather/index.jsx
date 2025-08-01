@@ -29,6 +29,15 @@ export default function Weather() {
     fetchWeatherData(search);
   }
 
+  function getCurrentDate() {
+    return new Date().toLocaleDateString(`en-us`, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
   useEffect(() => {
     fetchWeatherData("bangalore");
   }, []);
@@ -42,7 +51,41 @@ export default function Weather() {
         setSearch={setSearch}
         handleSearch={handleSearch}
       />
-      Weather
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div>
+          <div className="city-name">
+            <h2>
+              {weatherData?.name}, <span>{weatherData?.sys?.country}</span>
+            </h2>
+          </div>
+          <div className="date">
+            <span>{getCurrentDate()}</span>
+          </div>
+          <div>{weatherData?.main?.temp}</div>
+          <p className="description">
+            {weatherData && weatherData.weather && weatherData.weather[0]
+              ? weatherData.weather[0].description
+              : ""}
+          </p>
+          <div className="wether-info">
+            <div>
+              <div>
+                <p className="wind">{weatherData?.wind?.speed}</p>
+                <p>Wind Speed</p>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <p className="humidity">{weatherData?.main?.humidity}</p>
+                <p>Humidity</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
