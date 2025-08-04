@@ -84,6 +84,7 @@ export default function Weather() {
               </div>
             </div>
           </div>
+          <p className="city-desc">Enter any city above in the search bar</p>
         </div>
       )}
     </div>
